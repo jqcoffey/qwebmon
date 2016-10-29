@@ -1,7 +1,5 @@
 package com.criteo.qwebmon
 
-import java.time.temporal.{TemporalUnit, ChronoUnit}
-
 import com.twitter.finagle.http.Request
 import com.twitter.finatra.http.Controller
 
@@ -21,7 +19,7 @@ class QwebmonController extends Controller {
     SystemStatus(
       runningQueryCount = 5,
       averageQueries = 4.5f,
-      averageQueriesUnit = ChronoUnit.MINUTES
+      averageQueriesUnit = "minute"
     )
   }
 
@@ -32,4 +30,4 @@ class QwebmonController extends Controller {
 
 case class RunningQuery(user: String, runSeconds: Int, query: String)
 
-case class SystemStatus(runningQueryCount: Int, averageQueries: Float, averageQueriesUnit: TemporalUnit)
+case class SystemStatus(runningQueryCount: Int, averageQueries: Float, averageQueriesUnit: String)
