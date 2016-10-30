@@ -101,7 +101,11 @@ function runningQueries(target) {
     $.getJSON("/running-queries/" + target, function(r) {
         $("#running-queries table tbody").empty();
         $.each(r, function(k, v) {
-            $(`<tr><td class="user ansi-bright-yellow-fg">${v.user}</td><td class="run-seconds">${v.run_seconds}</td><td class="query">${v.query}</td></tr>`)
+            var runSeconds = v.run_seconds;
+            if (v.run_seconds > 60) {
+                runSeconds = `<span class="long-query">${v.run_seconds}</span>`;
+            }
+            $(`<tr><td class="user">${v.user}</td><td class="run-seconds">${runSeconds}</td><td class="query">${v.query}</td></tr>`)
                 .appendTo("#running-queries table tbody");
         })
     })
