@@ -5,16 +5,24 @@
     </head>
     <body>
         <div id="system-status">
-            <span>Running Queries: <span id="running-query-count"></span></span>
-            <span><span id="average-queries"></span> per <span id="average-queries-unit"></span></span>
+            <span class="ansi-blue-fg">Running Queries:</span> <span id="running-query-count"></span>,
+            <span id="average-queries"></span> per <span id="average-queries-unit"></span>
         </div>
+        <div id="refresh-info">
+            <span>Refreshing in: <span id="refresh-seconds"></span> seconds</span>
+            <span id="paused"> -- PAUSED press ESCAPE to continue --</span>
+        </div>
+        <div id="spacer"></div>
         <div id="running-queries">
             <table>
-                <tr>
-                    <th>username</th>
-                    <th>seconds</th>
-                    <th>query</th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th class="user">USER</th>
+                        <th class="run-seconds">SECONDS</th>
+                        <th class="query">QUERY</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
             </table>
         </div>
     </body>

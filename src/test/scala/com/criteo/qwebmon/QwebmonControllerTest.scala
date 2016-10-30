@@ -15,7 +15,7 @@ class QwebmonControllerTest extends FeatureTest {
         andExpect = Ok
       ).contentString
       response should startWith(
-        """[{"user":"foo","run_seconds":350,"query":"select distinct 1"},""".stripMargin
+        """[{"user":"j.coffey","run_seconds":350,"query":"select distinct 1"},""".stripMargin
       )
     }
   }

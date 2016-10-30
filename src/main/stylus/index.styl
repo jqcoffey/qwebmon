@@ -1,10 +1,94 @@
-$green = #1DD61D
-
-h1 {
-  font-family: Monospace
-
-  span {
-    color: $green
-    border-bottom: 1px dotted $green
-  }
+body {
+  font: 14px Monospace
+  color: #aabbc3
+  background-color: #263238
+  overflow: hidden
 }
+
+.ansi-black-fg { color: #49656f }
+.ansi-red-fg { color: #ed5866 }
+.ansi-green-fg { color: #c3e88d }
+.ansi-yellow-fg { color: #ffeb95 }
+.ansi-blue-fg { color: #82b1ff }
+.ansi-magenta-fg { color: #ae94dd }
+.ansi-cyan-fg { color: #82F7FF }
+.ansi-white-fg { color: #FFFFFF }
+.ansi-bright-black-fg { color: #49656f }
+.ansi-bright-red-fg { color: #ed5866 }
+.ansi-bright-green-fg { color: #c3e88d }
+.ansi-bright-yellow-fg { color: #ffeb95 }
+.ansi-bright-blue-fg { color: #82b1ff }
+.ansi-bright-magenta-fg { color: #ae94dd }
+.ansi-bright-cyan-fg { color: #82F7FF }
+.ansi-bright-white-fg { color: #FFFFFF }
+.ansi-black-bg { background-color: #000000 }
+.ansi-red-bg { background-color: #ed5866 }
+.ansi-green-bg { background-color: #c3e88d }
+.ansi-yellow-bg { background-color: #ffeb95 }
+.ansi-blue-bg { background-color: #82b1ff }
+.ansi-magenta-bg { background-color: #ae94dd }
+.ansi-cyan-bg { background-color: #82F7FF }
+.ansi-white-bg { background-color: #FFFFFF }
+.ansi-bright-black-bg { background-color: #000000 }
+.ansi-bright-red-bg { background-color: #ed5866 }
+.ansi-bright-green-bg { background-color: #c3e88d }
+.ansi-bright-yellow-bg { background-color: #ffeb95 }
+.ansi-bright-blue-bg { background-color: #82b1ff }
+.ansi-bright-magenta-bg { background-color: #ae94dd }
+.ansi-bright-cyan-bg { background-color: #82F7FF }
+.ansi-bright-white-bg { background-color: #FFFFFF }
+
+#paused
+  display: none
+
+table
+  border-spacing: 0px 0px
+  white-space: nowrap
+
+table td
+  white-space: nowrap
+
+div
+  margin-bottom: 3px
+  margin-top: 3px
+  width: 100%
+
+div#spacer
+  margin-bottom: 10px
+  margin-top: 5px
+  margin-inside: 2px
+  border-bottom: solid
+  border-width: 0px 0px 1px 0px
+
+#running-queries table
+  white-space: nowrap
+  table-layout: fixed
+  width: 100%
+
+#running-queries table td
+  white-space: nowrap
+  overflow: hidden
+  text-overflow: ellipsis
+  padding-left: 7px
+  padding-right: 7px
+  padding-top: 2px
+  padding-bottom: 2px
+
+#running-queries table th
+  font-weight: normal
+  padding-left: 7px
+  padding-right: 7px
+  padding-top: 2px
+  padding-bottom: 2px
+
+#running-queries table .user
+  width: 15%
+  text-align: left
+
+#running-queries table .run-seconds
+  width: 10%
+  text-align: left
+
+#running-queries table .query
+  width: 75%
+  text-align: left
