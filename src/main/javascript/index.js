@@ -1,6 +1,7 @@
 import $ from 'jquery';
 
 var refreshSecondsValue = 10;
+var longQueryThresholdSeconds = 60;
 
 $(document).ready(function() {
     refresh();
@@ -50,9 +51,26 @@ $(document).ready(function() {
 });
 
 function refresh() {
-    systemStatus("vertica");
-    runningQueries("vertica");
     refreshSecondsElement().html(refreshSecondsValue);
+
+    $.getJSON("/refresh/fake-db", function(r) {
+        var systemStatus = r.system_status;
+        var runningQueries = r.running_queries;
+
+        $("#running-query-count").html(systemStatus.running_query_count);
+        $("#average-queries").html(systemStatus.average_queries);
+        $("#average-queries-unit").html(systemStatus.average_queries_unit);
+
+        $("#running-queries table tbody").empty();
+        $.each(runningQueries, function(k, v) {
+            var runSeconds = v.run_seconds;
+            if (v.run_seconds >= longQueryThresholdSeconds) {
+                runSeconds = `<span class="long-query">${v.run_seconds}</span>`;
+            }
+            $(`<tr><td class="user">${v.user}</td><td class="run-seconds">${runSeconds}</td><td class="query">${v.query}</td></tr>`)
+                .appendTo("#running-queries table tbody");
+        })
+    });
     resume();
 }
 
@@ -87,28 +105,6 @@ function decrementRefreshSeconds() {
             refreshSecondsElement().html(refreshSeconds - 1);
         }
     }
-}
-
-function systemStatus(target) {
-    $.getJSON("/system-status/" + target, function(r) {
-        $("#running-query-count").html(r.running_query_count);
-        $("#average-queries").html(r.average_queries);
-        $("#average-queries-unit").html(r.average_queries_unit);
-    })
-}
-
-function runningQueries(target) {
-    $.getJSON("/running-queries/" + target, function(r) {
-        $("#running-queries table tbody").empty();
-        $.each(r, function(k, v) {
-            var runSeconds = v.run_seconds;
-            if (v.run_seconds > 60) {
-                runSeconds = `<span class="long-query">${v.run_seconds}</span>`;
-            }
-            $(`<tr><td class="user">${v.user}</td><td class="run-seconds">${runSeconds}</td><td class="query">${v.query}</td></tr>`)
-                .appendTo("#running-queries table tbody");
-        })
-    })
 }
 
 function highlightNextQuery() {

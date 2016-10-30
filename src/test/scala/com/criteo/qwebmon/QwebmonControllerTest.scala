@@ -9,13 +9,13 @@ class QwebmonControllerTest extends FeatureTest {
   override val server = new EmbeddedHttpServer(new FinatraServer)
 
   "Qwebmon" should {
-    "Provide queries as a json array" in {
+    "Provide a refresh for fake-db" in {
       val response = server.httpGet(
-        path = "/running-queries/foo",
+        path = "/refresh/fake-db",
         andExpect = Ok
       ).contentString
       response should startWith(
-        """[{"user":"j.coffey","run_seconds":350,"query":"select distinct 1"},""".stripMargin
+        """{"running_queries":[{"user":"j.coffey","run_seconds":350,"query":"select distinct 1"},"""
       )
     }
   }
