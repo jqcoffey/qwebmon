@@ -18,7 +18,10 @@ class QwebmonControllerTest extends FeatureTest {
         andExpect = Ok
       ).contentString
       response should startWith(
-        """{"running_queries":[{"user":"j.coffey","run_seconds":350,"query":"select distinct 1"},"""
+        """{"running_queries":[{"user":"johndoe","run_seconds":350,"query":"select distinct 1"},"""
+      )
+      response should include(
+        """"system_status":{"running_query_count":5,"average_queries":4.5,"average_queries_unit":"minute"}"""
       )
     }
   }
