@@ -109,10 +109,10 @@ function runningQueries(target) {
 
 function highlightNextQuery() {
     var queryRows = $("#running-queries table tbody tr");
-    if (queryRows.filter(".ansi-cyan-bg").length == 0) {
+    if (queryRows.filter(".highlighted").length == 0) {
         highlightRow(queryRows, 0)
     } else {
-        var highlightedIdx = $("#running-queries table tbody tr.ansi-cyan-bg").index();
+        var highlightedIdx = $("#running-queries table tbody tr.highlighted").index();
         if (highlightedIdx == queryRows.length - 1) {
             swapHighlightedRows(queryRows, highlightedIdx, 0);
         } else {
@@ -123,10 +123,10 @@ function highlightNextQuery() {
 
 function highlightPrevQuery() {
     var queryRows = $("#running-queries table tbody tr");
-    if (queryRows.filter(".ansi-cyan-bg").length == 0) {
+    if (queryRows.filter(".highlighted").length == 0) {
         highlightRow(queryRows, queryRows.length - 1)
     } else {
-        var highlightedIdx = $("#running-queries table tbody tr.ansi-cyan-bg").index();
+        var highlightedIdx = $("#running-queries table tbody tr.highlighted").index();
         if (highlightedIdx == 0) {
             swapHighlightedRows(queryRows, 0, queryRows.length - 1);
         } else {
@@ -141,9 +141,9 @@ function swapHighlightedRows(rows, from, to) {
 }
 
 function highlightRow(rows, idx) {
-    rows.eq(idx).addClass("ansi-cyan-bg").addClass("ansi-white-fg")
+    rows.eq(idx).addClass("highlighted")
 }
 
 function unhighlightRow(rows, idx) {
-    rows.eq(idx).removeClass("ansi-cyan-bg").removeClass("ansi-white-fg")
+    rows.eq(idx).removeClass("highlighted")
 }
