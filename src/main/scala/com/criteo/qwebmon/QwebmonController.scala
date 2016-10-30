@@ -1,14 +1,9 @@
 package com.criteo.qwebmon
 
-import com.criteo.qwebmon.drivers.FakeDbDriver
 import com.twitter.finagle.http.Request
 import com.twitter.finatra.http.Controller
 
-class QwebmonController extends Controller {
-
-  val drivers = Map(
-    "fake-db" -> new FakeDbDriver
-  )
+class QwebmonController(drivers: Map[String, DbDriver]) extends Controller {
 
   get("/refresh/:target") { r: Request =>
     val targetName = r.getParam("target")

@@ -1,12 +1,15 @@
 package com.criteo.qwebmon
 
+import com.criteo.qwebmon.drivers.FakeDbDriver
 import com.twitter.finagle.http.Status._
 import com.twitter.finatra.http.EmbeddedHttpServer
 import com.twitter.inject.server.FeatureTest
 
 class QwebmonControllerTest extends FeatureTest {
 
-  override val server = new EmbeddedHttpServer(new FinatraServer)
+  override val server = new EmbeddedHttpServer(new FinatraServer {
+    override def dbDrivers: Map[String, DbDriver] = Map("fake-db" -> new FakeDbDriver)
+  })
 
   "Qwebmon" should {
     "Provide a refresh for fake-db" in {
