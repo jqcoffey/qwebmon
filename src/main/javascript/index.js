@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import mousetrap from 'mousetrap';
 
 var refreshSecondsValue = 10;
 var longQueryThresholdSeconds = 60;
@@ -13,41 +14,17 @@ $(document).ready(function() {
         }
     }, 100);
 
-    // bind keydown events to the whole document
-    $(document).keydown(function(e) {
-        var keyCode = e.which;
-        console.log("have key code: " + keyCode);
-        switch (keyCode) {
-            // down arrow
-            case 40:
-                pause();
-                highlightNextQuery();
-                break;
-            // j key
-            case 74:
-                pause();
-                highlightNextQuery();
-                break;
-            // space bar
-            case 32:
-                pause();
-                highlightNextQuery();
-                break;
-            // up arrow
-            case 38:
-                pause();
-                highlightPrevQuery();
-                break;
-            // k key
-            case 75:
-                pause();
-                highlightPrevQuery();
-                break;
-            // escape
-            case 27:
-                refresh();
-        }
-    })
+    mousetrap.bind(['up', 'k'], function(e) {
+        pause();
+        highlightPrevQuery();
+    });
+    mousetrap.bind(['down', 'j', 'space'], function(e) {
+        pause();
+        highlightNextQuery();
+    });
+    mousetrap.bind('escape', function(e) {
+        refresh();
+    });
 });
 
 function refresh() {
