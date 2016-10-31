@@ -8,22 +8,24 @@
             <span class="ansi-magenta-fg">Running Queries:</span> <span id="running-query-count"></span>,
             <span id="average-queries"></span> per <span id="average-queries-unit"></span>
         </div>
-        <div id="refresh-info">
-            <span>Refreshing in: <span id="refresh-seconds"></span> seconds</span>
-            <span id="paused"> -- PAUSED press ESCAPE to continue --</span>
-        </div>
-        <div id="spacer"></div>
-        <div id="running-queries">
-            <table>
-                <thead>
-                    <tr>
-                        <th class="user">USER</th>
-                        <th class="run-seconds">SECONDS</th>
-                        <th class="query">QUERY</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+        <div id="running-queries-context" tabindex="0">
+            <div id="refresh-info">
+                <span>Refreshing in: <span id="refresh-seconds"></span> seconds</span>
+                <span id="paused"> -- PAUSED press ESCAPE to continue --</span>
+            </div>
+            <div id="spacer"></div>
+            <div id="running-queries">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="user">USER</th>
+                            <th class="run-seconds">SECONDS</th>
+                            <th class="query">QUERY</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </body>
 </html>

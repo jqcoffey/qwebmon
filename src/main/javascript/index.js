@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import mousetrap from 'mousetrap';
+import 'mousetrap';
 
 var refreshSecondsValue = 10;
 var longQueryThresholdSeconds = 60;
@@ -14,15 +14,21 @@ $(document).ready(function() {
         }
     }, 100);
 
-    mousetrap.bind(['up', 'k'], function(e) {
+    var runningQueriesContext = $('#running-queries-context');
+    runningQueriesContext.focus();
+    var runningQueriesContextElem = runningQueriesContext.get(0);
+
+    Mousetrap(runningQueriesContextElem).bind(['up', 'k'], function(e) {
         pause();
         highlightPrevQuery();
+        return false;
     });
-    mousetrap.bind(['down', 'j', 'space'], function(e) {
+
+    Mousetrap(runningQueriesContextElem).bind(['down', 'j', 'space'], function(e) {
         pause();
         highlightNextQuery();
     });
-    mousetrap.bind('escape', function(e) {
+    Mousetrap(runningQueriesContextElem).bind('escape', function(e) {
         refresh();
     });
 });
