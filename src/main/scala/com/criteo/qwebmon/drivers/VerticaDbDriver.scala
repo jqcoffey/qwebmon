@@ -1,21 +1,26 @@
 package com.criteo.qwebmon.drivers
 
-import java.sql.ResultSet
 import javax.sql.DataSource
 
-import com.criteo.qwebmon.{SystemStatus, DbStatus, DbDriver}
+import com.criteo.qwebmon.{RunningQuery, SystemStatus, DbStatus, DbDriver}
+import com.mchange.v2.c3p0.ComboPooledDataSource
+import com.typesafe.config.Config
+
+import scala.collection.mutable
 
 class VerticaDbDriver(config: VerticaDbDriverConfig) extends DbDriver {
+
+  override val targetName = config.target
 
   private val dataSource = config.dataSource
 
   private val runningQueriesSql =
     """
       |SELECT
-      |  client_hostname as client_hostname,
       |  user_name as user_name,
+      |  DATEDIFF('second', statement_start, clock_timestamp()) as exec_time,
       |  current_statement as current_statement,
-      |  DATEDIFF('second', statement_start, clock_timestamp()) as exec_time
+      |  client_hostname as client_hostname
       |FROM
       |  sessions
       |WHERE
@@ -26,16 +31,45 @@ class VerticaDbDriver(config: VerticaDbDriverConfig) extends DbDriver {
     """.stripMargin
 
   override def latestStatus: DbStatus = {
-    val conn = dataSource.getConnection
-    JdbcHelpers.withAutoCloseable(conn) { conn =>
-      val stmt = conn.createStatement
-      
-      DbStatus(Seq.empty, SystemStatus(5, 4.5f, "minute"))
+    val runningQueries: Seq[RunningQuery] = JdbcHelpers.executeQuery(dataSource, runningQueriesSql) { rs =>
+      val acc = mutable.ListBuffer.empty[RunningQuery]
+      while (rs.next()) {
+        acc += RunningQuery(
+          user = rs.getString(1),
+          runSeconds = rs.getInt(2),
+          query = rs.getString(3),
+          hostname = rs.getString(4)
+        )
+      }
+      acc
     }
 
-
+    DbStatus(
+      runningQueries = runningQueries,
+      systemStatus = SystemStatus(runningQueries.length, 4.3f, "minute")
+    )
   }
 
 }
 
-case class VerticaDbDriverConfig(driver: String, url: String, user: String, password: String, dataSource: DataSource)
+case class VerticaDbDriverConfig(target: String, dataSource: DataSource)
+
+case object VerticaDbDriverConfig {
+
+  def apply(config: Config, target: String, dataSource: ComboPooledDataSource): VerticaDbDriverConfig = {
+    val url = config.getString(s"vertica.$target.url")
+    val user = config.getString(s"vertica.$target.user")
+    val password = config.getString(s"vertica.$target.password")
+
+    dataSource.setDriverClass("com.vertica.jdbc.Driver")
+    dataSource.setJdbcUrl(url)
+    dataSource.setUser(user)
+    dataSource.setPassword(password)
+
+    VerticaDbDriverConfig(
+      target = target,
+      dataSource = dataSource
+    )
+  }
+
+}

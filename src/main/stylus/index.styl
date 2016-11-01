@@ -41,6 +41,12 @@ body {
 #paused
   display: none
 
+#inspect-query
+  display: none
+
+#running-queries
+  display: none
+
 table
   border-spacing: 0px 0px
   white-space: nowrap
@@ -96,13 +102,17 @@ span.long-query
   width: 15%
   text-align: left
 
-#running-queries table td.user
-  color: #82F7FF
-
 #running-queries table .run-seconds
   width: 10%
   text-align: left
 
-#running-queries table .query
-  width: 75%
+#running-queries table .hostname
+  width: 15%
   text-align: left
+
+#running-queries table .query
+  width: 60%
+  text-align: left
+
+#running-queries table td.user
+  color: #82F7FF

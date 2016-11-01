@@ -8,7 +8,7 @@ import com.twitter.finatra.http.routing.HttpRouter
 
 object FinatraServerMain extends FinatraServer {
   override def dbDrivers: Map[String, DbDriver] = Map(
-    "fake-db" -> new FakeDbDriver
+    FakeDbDriver.targetName -> FakeDbDriver
   )
 }
 

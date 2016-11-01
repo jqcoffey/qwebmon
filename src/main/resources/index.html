@@ -14,17 +14,24 @@
                 <span id="paused"> -- PAUSED press ESCAPE to continue --</span>
             </div>
             <div id="spacer"></div>
+
             <div id="running-queries">
                 <table>
                     <thead>
                         <tr>
                             <th class="user">USER</th>
                             <th class="run-seconds">SECONDS</th>
+                            <th class="hostname">HOSTNAME</th>
                             <th class="query">QUERY</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
                 </table>
+            </div>
+
+            <div id="inspect-query">
+                <div id="inspect-query-heading">Query Details:</div>
+                <pre><code id="inspect-query-formatted"></code></pre>
             </div>
         </div>
     </body>

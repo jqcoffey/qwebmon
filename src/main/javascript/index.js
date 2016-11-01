@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import 'mousetrap';
+import vkbeautify from 'vkbeautify/index';
 
 var refreshSecondsValue = 10;
 var longQueryThresholdSeconds = 60;
@@ -27,9 +28,23 @@ $(document).ready(function() {
     Mousetrap(runningQueriesContextElem).bind(['down', 'j', 'space'], function(e) {
         pause();
         highlightNextQuery();
+        return false;
     });
-    Mousetrap(runningQueriesContextElem).bind('escape', function(e) {
+
+    Mousetrap(runningQueriesContextElem).bind(['enter', 'l', 'right'], function(e) {
+        inspectQuery();
+        return false;
+    });
+
+    Mousetrap(runningQueriesContextElem).bind(['h', 'left'], function(e) {
+        $("#inspect-query").hide();
+        $("#running-queries").show();
+        return false;
+    });
+
+    Mousetrap.bind('escape', function(e) {
         refresh();
+        return false;
     });
 });
 
@@ -50,7 +65,7 @@ function refresh() {
             if (v.run_seconds >= longQueryThresholdSeconds) {
                 runSeconds = `<span class="long-query">${v.run_seconds}</span>`;
             }
-            $(`<tr><td class="user">${v.user}</td><td class="run-seconds">${runSeconds}</td><td class="query">${v.query}</td></tr>`)
+            $(`<tr><td class="user">${v.user}</td><td class="run-seconds">${runSeconds}</td><td class="hostname">${v.hostname}</td><td class="query">${v.query}</td></tr>`)
                 .appendTo("#running-queries table tbody");
         })
     });
@@ -62,7 +77,9 @@ function pause() {
 }
 
 function resume() {
-    $("#paused").hide()
+    $("#paused").hide();
+    $("#inspect-query").hide();
+    $("#running-queries").show();
 }
 
 function isPaused() {
@@ -129,4 +146,11 @@ function highlightRow(rows, idx) {
 
 function unhighlightRow(rows, idx) {
     rows.eq(idx).removeClass("highlighted")
+}
+
+function inspectQuery() {
+    $("#running-queries").hide();
+    var query = $("#running-queries table tbody tr.highlighted td.query").eq(0).text();
+    $('code#inspect-query-formatted').html(vkbeautify.sql(query));
+    $("#inspect-query").show();
 }
