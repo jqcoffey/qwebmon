@@ -1,5 +1,8 @@
 # A tool to monitor databases -- a WIP
-![Alt text](/screenshot.png?raw=true "An example of the fake-db store")
+Running queries view:
+![Alt text](/running-queries.png?raw=true "An example of the fake-db store")
+Inspect a query view:
+![Alt text](/inspect-query.png?raw=true "An example of the fake-db store")
 # Try it yourself
 First install loop:
 ```
