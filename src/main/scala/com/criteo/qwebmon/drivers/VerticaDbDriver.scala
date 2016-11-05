@@ -2,17 +2,13 @@ package com.criteo.qwebmon.drivers
 
 import javax.sql.DataSource
 
-import com.criteo.qwebmon.{RunningQuery, SystemStatus, DbStatus, DbDriver}
+import com.criteo.qwebmon.{RunningQuery, DbDriver}
 import com.mchange.v2.c3p0.ComboPooledDataSource
 import com.typesafe.config.Config
 
 import scala.collection.mutable
 
-class VerticaDbDriver(config: VerticaDbDriverConfig) extends DbDriver {
-
-  override val targetName = config.target
-
-  private val dataSource = config.dataSource
+class VerticaDbDriver(val name: String, dataSource: DataSource) extends DbDriver {
 
   private val runningQueriesSql =
     """
@@ -30,7 +26,7 @@ class VerticaDbDriver(config: VerticaDbDriverConfig) extends DbDriver {
       |  exec_time desc
     """.stripMargin
 
-  override def latestStatus: DbStatus = {
+  override def runningQueries: Seq[RunningQuery] = {
     val runningQueries: Seq[RunningQuery] = JdbcHelpers.executeQuery(dataSource, runningQueriesSql) { rs =>
       val acc = mutable.ListBuffer.empty[RunningQuery]
       while (rs.next()) {
@@ -43,11 +39,7 @@ class VerticaDbDriver(config: VerticaDbDriverConfig) extends DbDriver {
       }
       acc
     }
-
-    DbStatus(
-      runningQueries = runningQueries,
-      systemStatus = SystemStatus(runningQueries.length, 4.3f, "minute")
-    )
+    runningQueries
   }
 
 }

@@ -7,9 +7,10 @@ class QwebmonController(drivers: Map[String, DbDriver]) extends Controller {
 
   get("/refresh/:target") { r: Request =>
     val targetName = r.getParam("target")
-    drivers.get(targetName).map(_.latestStatus).getOrElse(
-      response.badRequest(s"invalid target supplied: $targetName")
-    )
+    drivers.get(targetName).map { driver =>
+      val runningQueries = driver.runningQueries
+      DbStatus(runningQueries, runningQueries.length)
+    }.getOrElse(response.badRequest(s"invalid target supplied: $targetName"))
   }
 
   get("/") { r: Request =>
@@ -17,3 +18,5 @@ class QwebmonController(drivers: Map[String, DbDriver]) extends Controller {
   }
 
 }
+
+case class DbStatus(runningQueries: Seq[RunningQuery], runningQueryCount: Int)

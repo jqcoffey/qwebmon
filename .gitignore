@@ -8,3 +8,5 @@ target/
 .idea/
 .project
 *.iml
+master.zip
+test_db-master/

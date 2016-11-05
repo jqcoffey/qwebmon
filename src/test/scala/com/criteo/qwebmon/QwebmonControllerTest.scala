@@ -8,7 +8,7 @@ import com.twitter.inject.server.FeatureTest
 class QwebmonControllerTest extends FeatureTest {
 
   override val server = new EmbeddedHttpServer(new FinatraServer {
-    override def dbDrivers: Map[String, DbDriver] = Map(FakeDbDriver.targetName -> FakeDbDriver)
+    override def dbDrivers: Map[String, DbDriver] = Map(FakeDbDriver.name -> FakeDbDriver)
   })
 
   "Qwebmon" should {
@@ -17,12 +17,12 @@ class QwebmonControllerTest extends FeatureTest {
         path = "/refresh/fake-db",
         andExpect = Ok
       ).contentString
+
       response should startWith(
         """{"running_queries":[{"user":"johndoe","run_seconds":350,"query":"select distinct 1","hostname":"127.0.0.1"},"""
       )
-      response should include(
-        """"system_status":{"running_query_count":5,"average_queries":4.5,"average_queries_unit":"minute"}"""
-      )
+
+      response should include(""""running_query_count":5""")
     }
   }
 

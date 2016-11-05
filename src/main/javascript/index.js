@@ -51,16 +51,13 @@ $(document).ready(function() {
 function refresh() {
     refreshSecondsElement().html(refreshSecondsValue);
 
-    $.getJSON("/refresh/fake-db", function(r) {
-        var systemStatus = r.system_status;
-        var runningQueries = r.running_queries;
+    var target = window.location.search.substring(1);
 
-        $("#running-query-count").html(systemStatus.running_query_count);
-        $("#average-queries").html(systemStatus.average_queries);
-        $("#average-queries-unit").html(systemStatus.average_queries_unit);
+    $.getJSON(`/refresh/${target}`, function(r) {
+        $("#running-query-count").html(r.running_query_count);
 
         $("#running-queries table tbody").empty();
-        $.each(runningQueries, function(k, v) {
+        $.each(r.running_queries, function(k, v) {
             var runSeconds = v.run_seconds;
             if (v.run_seconds >= longQueryThresholdSeconds) {
                 runSeconds = `<span class="long-query">${v.run_seconds}</span>`;
