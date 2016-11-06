@@ -48,3 +48,8 @@ Now run some queries and then pop over to your browser to see what's going on!
 ```
 $ mysqlslap --create-schema=employees --no-drop --delimiter=';' --concurrency=5 --iterations=10 --query=queries/queries.sql
 ```
+# Specifying your own config
+Configuration is based on https://github.com/typesafehub/config, and as such you can specify your own config file when launching the app:
+```
+$ java -jar path/to/qwebmon.jar -Dconfig.file=myconfig.conf
+```

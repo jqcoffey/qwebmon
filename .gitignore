@@ -8,5 +8,7 @@ target/
 .idea/
 .project
 *.iml
+*.swp
+*.conf
 master.zip
 test_db-master/

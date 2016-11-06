@@ -27,8 +27,6 @@ object FinatraServerMain extends FinatraServer {
       case x => sys.error(s"illegal config syntax at $x")
     }
 
-    println(s"have targetConfig: $targetName, $targetConfig")
-
     targetConfig.getString("driver") match {
       case "mysql" => _dbDrivers += targetName -> buildMysqlDbDriver(targetName, targetConfig)
       case "vertica" => _dbDrivers += targetName -> buildVerticaDbDriver(targetName, targetConfig)
@@ -40,8 +38,6 @@ object FinatraServerMain extends FinatraServer {
   override def dbDrivers: Map[String, DbDriver] = _dbDrivers.toMap
 
   private def buildMysqlDbDriver(name: String, config: Config): MysqlDbDriver = {
-    println(s"configuring mysql target: $name, $config")
-
     val dataSource = new ComboPooledDataSource()
     dataSource.setDriverClass("com.mysql.cj.jdbc.Driver")
     dataSource.setJdbcUrl(config.getString("url"))
@@ -51,8 +47,6 @@ object FinatraServerMain extends FinatraServer {
   }
 
   private def buildVerticaDbDriver(name: String, config: Config): VerticaDbDriver = {
-    println(s"configuring mysql target: $name, $config")
-
     val dataSource = new ComboPooledDataSource()
 
     val connectionProps = new Properties()
