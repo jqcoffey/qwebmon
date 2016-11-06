@@ -3,8 +3,6 @@ package com.criteo.qwebmon.drivers
 import javax.sql.DataSource
 
 import com.criteo.qwebmon.{RunningQuery, DbDriver}
-import com.mchange.v2.c3p0.ComboPooledDataSource
-import com.typesafe.config.Config
 
 import scala.collection.mutable
 
@@ -40,28 +38,6 @@ class VerticaDbDriver(val name: String, dataSource: DataSource) extends DbDriver
       acc
     }
     runningQueries
-  }
-
-}
-
-case class VerticaDbDriverConfig(target: String, dataSource: DataSource)
-
-case object VerticaDbDriverConfig {
-
-  def apply(config: Config, target: String, dataSource: ComboPooledDataSource): VerticaDbDriverConfig = {
-    val url = config.getString(s"vertica.$target.url")
-    val user = config.getString(s"vertica.$target.user")
-    val password = config.getString(s"vertica.$target.password")
-
-    dataSource.setDriverClass("com.vertica.jdbc.Driver")
-    dataSource.setJdbcUrl(url)
-    dataSource.setUser(user)
-    dataSource.setPassword(password)
-
-    VerticaDbDriverConfig(
-      target = target,
-      dataSource = dataSource
-    )
   }
 
 }

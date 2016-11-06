@@ -4,9 +4,7 @@ import com.criteo.qwebmon.{RunningQuery, DbDriver}
 
 import scala.util.Random
 
-object FakeDbDriver extends DbDriver {
-
-  override val name = "fake-db"
+class FakeDbDriver(val name: String) extends DbDriver {
 
   private def randInt = Random.nextInt(100)
 

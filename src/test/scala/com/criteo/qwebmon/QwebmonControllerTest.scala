@@ -8,7 +8,7 @@ import com.twitter.inject.server.FeatureTest
 class QwebmonControllerTest extends FeatureTest {
 
   override val server = new EmbeddedHttpServer(new FinatraServer {
-    override def dbDrivers: Map[String, DbDriver] = Map(FakeDbDriver.name -> FakeDbDriver)
+    override def dbDrivers: Map[String, DbDriver] = Map("fake-db" -> new FakeDbDriver("fake-db"))
   })
 
   "Qwebmon" should {
